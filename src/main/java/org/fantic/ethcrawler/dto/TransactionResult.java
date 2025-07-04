@@ -1,0 +1,16 @@
+package org.fantic.ethcrawler.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransactionResult {
+    private boolean success;
+    private String errorMessage;
+    private List<EthTransactionDto> transactions;
+}
