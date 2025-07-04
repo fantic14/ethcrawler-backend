@@ -55,7 +55,7 @@ public class EtherscanService {
             String valueInWei =tx.get("value").toString();
             BigDecimal ethValue = new BigDecimal(valueInWei)
                     .divide(new BigDecimal("1000000000000000000"));
-            dto.setValue(ethValue.setScale(6, RoundingMode.DOWN).toPlainString() + " ETH");
+            dto.setValue(ethValue.setScale(12, RoundingMode.DOWN).toPlainString() + " ETH");
             dto.setHash((String) tx.get("hash"));
             dto.setBlockNumber((String) tx.get("blockNumber"));
             dto.setTimeStamp((String) tx.get("timeStamp"));

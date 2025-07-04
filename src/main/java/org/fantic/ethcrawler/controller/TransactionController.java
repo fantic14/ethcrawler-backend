@@ -1,18 +1,14 @@
 package org.fantic.ethcrawler.controller;
 
 import jakarta.validation.constraints.NotBlank;
-import org.fantic.ethcrawler.dto.EthTransactionDto;
 import org.fantic.ethcrawler.dto.TransactionResult;
 import org.fantic.ethcrawler.service.EtherscanService;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@Controller
+@CrossOrigin(origins = "http://localhost:5173")
+@RestController
+@RequestMapping("/api")
 public class TransactionController {
 
     private final EtherscanService etherscanService;
@@ -21,24 +17,11 @@ public class TransactionController {
         this.etherscanService = etherscanService;
     }
 
-    @GetMapping("/")
-    public String showForm() {
-        return "transaction-form";
-    }
-
-    @PostMapping("/transactions")
-    public String getTransactions (
+    @GetMapping("/transactions")
+    public TransactionResult getTransactions (
             @RequestParam("walletAddress") @NotBlank String walletAddress,
-            @RequestParam("startBlock") @NotBlank String startBlock,
-            Model model
+            @RequestParam("startBlock") @NotBlank String startBlock
     ) {
-        TransactionResult result = etherscanService.getNormalTransactions(walletAddress, startBlock);
-        if(!result.isSuccess()){
-            model.addAttribute("errorMessage", result.getErrorMessage());
-            return "transaction-form";
-        }
-        model.addAttribute("transactions", result.getTransactions());
-        model.addAttribute("walletAddress", walletAddress);
-        return "transaction-result";
+        return etherscanService.getNormalTransactions(walletAddress, startBlock);
     }
 }
