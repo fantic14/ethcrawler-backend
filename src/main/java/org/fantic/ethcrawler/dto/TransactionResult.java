@@ -10,7 +10,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionResult {
-    private boolean success;
+    private boolean statusMessage;
     private String errorMessage;
     private List<EthTransactionDto> transactions;
+
+    public void addToTransactions(List<EthTransactionDto> newTransactions) {
+        this.transactions.addAll(newTransactions);
+    }
 }

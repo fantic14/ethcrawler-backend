@@ -9,6 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +26,7 @@ public class EtherscanService {
 
     public TransactionResult getNormalTransactions(String walletAddress, String startBlock) {
         String url = UriComponentsBuilder.newInstance()
-                .scheme("https")
-                .host("api.etherscan.io")
-                .path("/api")
+                .uri(URI.create(etherscanApiUrl))
                 .queryParam("module", "account")
                 .queryParam("action", "txlist")
                 .queryParam("address", walletAddress)
@@ -55,7 +54,7 @@ public class EtherscanService {
             String valueInWei =tx.get("value").toString();
             BigDecimal ethValue = new BigDecimal(valueInWei)
                     .divide(new BigDecimal("1000000000000000000"));
-            dto.setValue(ethValue.setScale(12, RoundingMode.DOWN).toPlainString() + " ETH");
+            dto.setValue(ethValue.setScale(15, RoundingMode.CEILING).toPlainString() + " ETH");
             dto.setHash((String) tx.get("hash"));
             dto.setBlockNumber((String) tx.get("blockNumber"));
             dto.setTimeStamp((String) tx.get("timeStamp"));
