@@ -15,7 +15,6 @@ public class TransactionResult {
     private List<EthTransactionDto> transactions;
 
     public void addToTransactions(List<EthTransactionDto> newTransactions) {
-        if (newTransactions != null)
-            this.transactions.addAll(newTransactions);
+        this.transactions.addAll(newTransactions);
     }
 }
