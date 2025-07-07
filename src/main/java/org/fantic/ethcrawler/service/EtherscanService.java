@@ -24,14 +24,14 @@ public class EtherscanService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public TransactionResult getNormalTransactions(String walletAddress, String startBlock) {
+    public TransactionResult getNormalTransactions(String walletAddress, String startBlock, String endBlock) {
         String url = UriComponentsBuilder.newInstance()
                 .uri(URI.create(etherscanApiUrl))
                 .queryParam("module", "account")
                 .queryParam("action", "txlist")
                 .queryParam("address", walletAddress)
                 .queryParam("startblock", startBlock)
-                .queryParam("endblock", "99999999")
+                .queryParam("endblock", endBlock)
                 .queryParam("sort", "asc")
                 .queryParam("apikey", etherscanApiKey)
                 .toUriString();
