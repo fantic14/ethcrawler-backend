@@ -1,11 +1,13 @@
 package org.fantic.ethcrawler.controller;
 
 import jakarta.validation.constraints.NotBlank;
-import org.fantic.ethcrawler.dto.TransactionResult;
+import org.fantic.ethcrawler.dto.transactions.TransactionResult;
 import org.fantic.ethcrawler.service.EtherscanService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -23,22 +25,36 @@ public class TransactionController {
             @RequestParam("walletAddress") @NotBlank String walletAddress,
             @RequestParam("startBlock") @NotBlank String startBlock
     ) {
+
+        // TODO make this faster ? Parallel requests (watch out for the limit of 5 calls per second) ?
+
         TransactionResult transactionResult = new TransactionResult(true, null, new ArrayList<>());
-        try {
+
+        try (ExecutorService executor = Executors.newFixedThreadPool(5)) {
+
+            //List<Future<TransactionResult>> futures = new ArrayList<>();
             int newStart = Integer.parseInt(startBlock);
             TransactionResult temp;
+            boolean first = true;
             while (true) {
-               temp = etherscanService.getNormalTransactions(walletAddress, String.valueOf(newStart));
-               Thread.sleep(200);
-               if (temp.getErrorMessage() != null) break;
-               transactionResult.addToTransactions(temp.getTransactions());
-               if (temp.getTransactions().size() < 10000) break;
-               newStart += 10000;
+            //    for (int i = 0; i < 5; i++) {
+            //        Callable<TransactionResult> task = () -> etherscanService.getNormalTransactions(walletAddress, String.valueOf())
+            //    }
+                System.out.println(newStart);
+                temp = etherscanService.getNormalTransactions(walletAddress, String.valueOf(newStart));
+                transactionResult.addToTransactions(temp.getTransactions());
+                if (first && temp.getErrorMessage() != null) {
+                    return new TransactionResult(false, temp.getErrorMessage(), null);
+                }
+                first = false;
+                if (temp.getTransactions() != null && temp.getTransactions().size() < 10000) break;
+                if (temp.getTransactions() != null)
+                    newStart = Integer.parseInt(temp.getTransactions().getLast().getBlockNumber())+1;
+                else break;
             }
         } catch (NumberFormatException e) {
+            System.out.println("entered numberformat exception");
             return new TransactionResult(false, "Start block not an integer", null);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
         return transactionResult;
     }

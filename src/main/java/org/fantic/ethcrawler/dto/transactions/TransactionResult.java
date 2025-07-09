@@ -1,4 +1,4 @@
-package org.fantic.ethcrawler.dto;
+package org.fantic.ethcrawler.dto.transactions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

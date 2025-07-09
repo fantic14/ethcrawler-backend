@@ -1,7 +1,8 @@
 package org.fantic.ethcrawler.service;
 
-import org.fantic.ethcrawler.dto.EthTransactionDto;
-import org.fantic.ethcrawler.dto.TransactionResult;
+import org.fantic.ethcrawler.dto.balance.AccountBalanceResult;
+import org.fantic.ethcrawler.dto.transactions.EthTransactionDto;
+import org.fantic.ethcrawler.dto.transactions.TransactionResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -62,5 +63,18 @@ public class EtherscanService {
         }).toList();
 
         return new TransactionResult(true, null, transactions);
+    }
+
+    public AccountBalanceResult getNormalBalance(String walledAddress, String date) {
+
+        // TODO convert from yyyy-mm-dd to unix timestamp and request closest earlier block
+//        String url = UriComponentsBuilder.newInstance()
+//                .uri(URI.create(etherscanApiUrl))
+//                .queryParam()
+//                .toUriString();
+
+        // TODO make second query to get balance from block that previous query returned
+
+        return new AccountBalanceResult();
     }
 }
