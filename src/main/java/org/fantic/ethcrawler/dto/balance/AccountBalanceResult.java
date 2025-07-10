@@ -11,5 +11,5 @@ public class AccountBalanceResult {
 
     private boolean statusMessage;
     private String errorMessage;
-    private AccountBalanceDto accountBalanceDto;
+    private AccountBalanceDto accountBalance;
 }
