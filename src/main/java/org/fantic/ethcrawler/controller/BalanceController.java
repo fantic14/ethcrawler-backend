@@ -2,7 +2,7 @@ package org.fantic.ethcrawler.controller;
 
 import jakarta.validation.constraints.NotBlank;
 import org.fantic.ethcrawler.dto.balance.AccountBalanceResult;
-import org.fantic.ethcrawler.service.EtherscanService;
+import org.fantic.ethcrawler.service.InfuraService;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -10,21 +10,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class BalanceController {
 
-    private EtherscanService etherscanService;
+    private InfuraService infuraService;
 
-    public BalanceController(EtherscanService etherscanService) {
-        this.etherscanService = etherscanService;
+    public BalanceController(InfuraService infuraService) {
+        this.infuraService = infuraService;
     }
 
     @GetMapping("/balance")
     public AccountBalanceResult getBalance(
             @RequestParam("walletAddress") @NotBlank String walletAddress,
-            @RequestParam("date") @NotBlank String date
+            @RequestParam("date") @NotBlank String date,
+            @RequestParam("token") @NotBlank String token
     ) {
-            AccountBalanceResult accountBalanceResult;
+        AccountBalanceResult accountBalanceResult;
 
-            accountBalanceResult = this.etherscanService.getNormalBalance(walletAddress, date);
+        accountBalanceResult = this.infuraService.getNormalBalance(walletAddress, date, token);
 
-            return accountBalanceResult;
+        return accountBalanceResult;
     }
 }

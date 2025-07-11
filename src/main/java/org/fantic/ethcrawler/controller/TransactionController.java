@@ -37,9 +37,9 @@ public class TransactionController {
             TransactionResult temp;
             boolean first = true;
             while (true) {
-            //    for (int i = 0; i < 5; i++) {
-            //        Callable<TransactionResult> task = () -> etherscanService.getNormalTransactions(walletAddress, String.valueOf())
-            //    }
+                //    for (int i = 0; i < 5; i++) {
+                //        Callable<TransactionResult> task = () -> etherscanService.getNormalTransactions(walletAddress, String.valueOf())
+                //    }
                 System.out.println(newStart);
                 temp = etherscanService.getNormalTransactions(walletAddress, String.valueOf(newStart));
                 transactionResult.addToTransactions(temp.getTransactions());
@@ -49,7 +49,7 @@ public class TransactionController {
                 first = false;
                 if (temp.getTransactions() != null && temp.getTransactions().size() < 10000) break;
                 if (temp.getTransactions() != null)
-                    newStart = Integer.parseInt(temp.getTransactions().getLast().getBlockNumber())+1;
+                    newStart = Integer.parseInt(temp.getTransactions().getLast().getBlockNumber()) + 1;
                 else break;
             }
         } catch (NumberFormatException e) {
