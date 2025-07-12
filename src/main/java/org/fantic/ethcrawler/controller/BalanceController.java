@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class BalanceController {
 
-    private InfuraService infuraService;
+    private final InfuraService infuraService;
 
     public BalanceController(InfuraService infuraService) {
         this.infuraService = infuraService;
@@ -22,10 +22,7 @@ public class BalanceController {
             @RequestParam("date") @NotBlank String date,
             @RequestParam("token") @NotBlank String token
     ) {
-        AccountBalanceResult accountBalanceResult;
 
-        accountBalanceResult = this.infuraService.getNormalBalance(walletAddress, date, token);
-
-        return accountBalanceResult;
+        return this.infuraService.getNormalBalance(walletAddress.trim(), date.trim(), token.trim());
     }
 }

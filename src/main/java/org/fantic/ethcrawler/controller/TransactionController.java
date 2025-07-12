@@ -30,18 +30,12 @@ public class TransactionController {
 
         TransactionResult transactionResult = new TransactionResult(true, null, new ArrayList<>());
 
-        try (ExecutorService executor = Executors.newFixedThreadPool(5)) {
-
-            //List<Future<TransactionResult>> futures = new ArrayList<>();
-            int newStart = Integer.parseInt(startBlock);
+        try {
+            int newStart = Integer.parseInt(startBlock.trim());
             TransactionResult temp;
             boolean first = true;
             while (true) {
-                //    for (int i = 0; i < 5; i++) {
-                //        Callable<TransactionResult> task = () -> etherscanService.getNormalTransactions(walletAddress, String.valueOf())
-                //    }
-                System.out.println(newStart);
-                temp = etherscanService.getNormalTransactions(walletAddress, String.valueOf(newStart));
+                temp = etherscanService.getNormalTransactions(walletAddress.trim(), String.valueOf(newStart));
                 transactionResult.addToTransactions(temp.getTransactions());
                 if (first && temp.getErrorMessage() != null) {
                     return new TransactionResult(false, temp.getErrorMessage(), null);

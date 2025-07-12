@@ -19,6 +19,7 @@ import java.util.Map;
 public class InfuraService {
 
     private final EtherscanService etherscanService;
+
     @Value("${mainnet.infura.api.url.with.key}")
     private String mainnetInfuraApiUrl;
 

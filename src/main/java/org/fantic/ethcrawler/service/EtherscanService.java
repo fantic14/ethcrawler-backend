@@ -57,11 +57,15 @@ public class EtherscanService {
             dto.setTo((String) tx.get("to"));
             String valueInWei = tx.get("value").toString();
             BigDecimal ethValue = new BigDecimal(valueInWei)
-                    .divide(new BigDecimal("1000000000000000000"), 15, RoundingMode.HALF_DOWN);
+                    .divide(BigDecimal.TEN.pow(18), 15, RoundingMode.HALF_DOWN);
             dto.setValue(ethValue.toPlainString() + " ETH");
             dto.setHash((String) tx.get("hash"));
             dto.setBlockNumber((String) tx.get("blockNumber"));
             dto.setTimeStamp((String) tx.get("timeStamp"));
+            long transactionFeeInWei = (Long.parseLong((String) tx.get("gas")) * Long.parseLong((String) tx.get("gasPrice")));
+            BigDecimal transactionFee = new BigDecimal(transactionFeeInWei)
+                   .divide(BigDecimal.TEN.pow(18), 15, RoundingMode.HALF_DOWN);
+            dto.setTransactionFee(transactionFee.toPlainString() + " ETH");
             return dto;
         }).toList();
 
