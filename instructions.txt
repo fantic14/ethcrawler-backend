@@ -1,1 +1,0 @@
-To run this code, enter terminal/cmd from the project folder, type './gradlew bootRun' and press enter.
